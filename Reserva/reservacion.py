@@ -13,7 +13,7 @@ def main():
     parametro_fecha_entrada = "2014-01-01 16:30"
     parametro_fecha_salida = "2014-01-01 18:45"
     parametro_tasa_diurna = 45
-    parametro_tasa_nocturna = 45
+    parametro_tasa_nocturna = 90
     
     try:
         fecha_entrada = datetime.strptime(parametro_fecha_entrada, "%Y-%m-%d %H:%M")
@@ -67,7 +67,8 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
     while fecha_revision < fecha_salida:
         
         hora_actual = fecha_revision.hour
-        hora_siguiente = (hora_actual + 1) % 24        
+        hora_siguiente = (hora_actual + 1) % 24  
+        print("hora actual y siguiente: ", hora_actual, hora_siguiente)      
         
         periodo_nocturno1 = list(range(0,6))
         if hora_actual in periodo_nocturno1:
@@ -91,9 +92,12 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
             total_pago_reserva += tarifa._tasa_nocturna
     
     
-        fecha_revision = fecha_revision.replace(hour = hora_siguiente, minute = fecha_salida.minute)
+        fecha_revision = fecha_revision.replace(hour = hora_siguiente)
         if fecha_revision.hour == 0:
             fecha_revision = fecha_revision + timedelta(days = 1)
+            
+        print("total acumulado: ", total_pago_reserva)
+        print("nueva fecha y hora siguiente: ", fecha_revision, hora_siguiente)
     
     return total_pago_reserva
         
