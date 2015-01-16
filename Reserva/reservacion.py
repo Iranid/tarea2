@@ -67,8 +67,15 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
     while fecha_revision < fecha_salida:
         
         hora_actual = fecha_revision.hour
-        hora_siguiente = (hora_actual + 1) % 24  
-        print("hora actual y siguiente: ", hora_actual, hora_siguiente)      
+        hora_siguiente = (hora_actual + 1) % 24 
+        hora_siguiente_DT = fecha_revision.replace(hour = hora_siguiente) 
+        
+        if hora_siguiente_DT > fecha_salida:
+            hora_siguiente_DT = fecha_salida
+            hora_siguiente = hora_siguiente_DT.hour
+        print("\n")    
+        print("hora actual y siguiente: ", hora_actual, hora_siguiente)  
+        print("rango analizado: ", fecha_revision.strftime("%H:%M"), " - ", hora_siguiente_DT.strftime("%H:%M"))    
         
         periodo_nocturno1 = list(range(0,6))
         if hora_actual in periodo_nocturno1:
@@ -92,7 +99,7 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
             total_pago_reserva += tarifa._tasa_nocturna
     
     
-        fecha_revision = fecha_revision.replace(hour = hora_siguiente)
+        fecha_revision = fecha_revision.replace(hour = hora_siguiente_DT.hour, minute = hora_siguiente_DT.minute)
         if fecha_revision.hour == 0:
             fecha_revision = fecha_revision + timedelta(days = 1)
             
