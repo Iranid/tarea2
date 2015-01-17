@@ -60,6 +60,7 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
     max_tasa = max(tarifa.getTasaDiurno(), tarifa.getTasaNocturno())
     
     fecha_revision = fecha_entrada
+    contadorHoras = 1
     while fecha_revision < fecha_salida:
         
         hora_actual = fecha_revision.hour
@@ -70,12 +71,13 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
             hora_siguiente_DT = fecha_salida
             hora_siguiente = hora_siguiente_DT.hour
         print("\n")    
+        print("Horas acumuladas:", contadorHoras)
         print("hora actual y siguiente: ", hora_actual, hora_siguiente)  
         print("rango analizado: ", fecha_revision.strftime("%H:%M"), " - ", hora_siguiente_DT.strftime("%H:%M"))    
         
         periodo_nocturno1 = list(range(0,6))
         if hora_actual in periodo_nocturno1:
-            if hora_siguiente == 6:
+            if hora_siguiente == 6 and hora_siguiente_DT.minute != 0:
                 total_pago_reserva += max_tasa
             else:
                 total_pago_reserva += tarifa.getTasaNocturno()
@@ -84,7 +86,7 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
         
         periodo_diurno = list(range(6,18))
         if hora_actual in periodo_diurno:
-            if hora_siguiente == 18:
+            if hora_siguiente == 18 and hora_siguiente_DT.minute != 0:
                 total_pago_reserva += max_tasa
             else:
                 total_pago_reserva += tarifa.getTasaDiurno()
@@ -94,6 +96,7 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
         if hora_actual in periodo_nocturno2:
             total_pago_reserva += tarifa.getTasaNocturno()
     
+        contadorHoras += 1  
     
         fecha_revision = fecha_revision.replace(hour = hora_siguiente_DT.hour, minute = hora_siguiente_DT.minute)
         if fecha_revision.hour == 0:

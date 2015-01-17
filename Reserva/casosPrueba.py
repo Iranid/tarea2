@@ -21,7 +21,7 @@ class TestHoras(unittest.TestCase):
         fecha_entrada = datetime.strptime(fecha_entrada, "%Y-%m-%d %H:%M")
         fecha_salida = datetime.strptime(fecha_salida,"%Y-%m-%d %H:%M")
         return calculo_monto_reserva(fecha_entrada,fecha_salida,self.tarifa)
-      
+        
     def testMinTiempo(self):
         #Arreglar assertRaises
         self.assertRaises(AssertionError, self.calcularMonto("2014-01-01 01:00", "2014-01-01 01:14"))
@@ -38,16 +38,17 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 01:20", "2014-01-04 01:20")
         self.assertEqual(monto, (nocturno*11 + diurno*11 + max(nocturno,diurno)*2 )*3) 
     
+    
     def testMayorTiempoExacto(self):
-        #Revisar caso de prueba (La hora diurna Aplica de 6:00 a 18:00 (inclusive)
-        # Transicion Entre hora 17:00 y hora 18:00 se esta cobrando la tasa nocturna (deberia ser la diurna)
         monto = self.calcularMonto("2014-01-01 01:00", "2014-01-04 01:00")
         self.assertEqual(monto,(nocturno*12 + diurno*12)*3) 
-                 
+
+             
     def testUnMinuto(self):
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:16")
         self.assertEqual(monto, nocturno*1)
-        
+
+       
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
