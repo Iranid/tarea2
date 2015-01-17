@@ -35,15 +35,19 @@ class TestHoras(unittest.TestCase):
         
     def testMayorTiempoInexacto(self):
         diurno,nocturno = 7,5 
-        monto = self.calcularMonto("2014-01-01 01:20", "2014-01-04 01:20",diurno,nocturno)
+        monto = self.calcularMonto("2014-01-01 00:20", "2014-01-04 00:20",diurno,nocturno)
         self.assertEqual(monto, (nocturno*11 + diurno*11 + max(nocturno,diurno)*2 )*3) 
     
     def testMayorTiempoExacto(self):
         #Revisar caso de prueba (La hora diurna Aplica de 6:00 a 18:00 (inclusive)
         # Transicion Entre hora 17:00 y hora 18:00 se esta cobrando la tasa nocturna (deberia ser la diurna)
         diurno,nocturno = 7,5 
-        monto = self.calcularMonto("2014-01-01 01:00", "2014-01-04 01:00",diurno,nocturno)
-        self.assertEqual(monto,(nocturno*12 + diurno*12)*3) 
+        monto = self.calcularMonto("2014-01-01 00:00", "2014-01-04 00:00",diurno,nocturno)
+        self.assertEqual(monto,(nocturno*11 + diurno*12 + max(diurno,nocturno))*3)
+        
+        diurno, nocturno = 11,9 
+        monto = self.calcularMonto("2014-01-01 00:00", "2014-01-04 00:00",diurno,nocturno)
+        self.assertEqual(monto,(nocturno*11 + diurno*12 + max(diurno,nocturno))*3)
              
     def testUnMinuto(self):
         diurno,nocturno = 7,5 
