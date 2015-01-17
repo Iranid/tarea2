@@ -46,6 +46,10 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:16")
         self.assertEqual(monto, nocturno*1)
         
+    def testTransicionMasUnMinuto(self):
+        monto = self.calcularMonto("2014-01-12 05:01", "2014-01-12 06:02")
+        self.assertEqual(monto, (max(nocturno, diurno)*1 + diurno *1))
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
