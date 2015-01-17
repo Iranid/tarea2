@@ -81,6 +81,7 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 17:00", "2014-01-01 18:01")
         self.assertEqual(monto,nocturno + diurno)
         
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
