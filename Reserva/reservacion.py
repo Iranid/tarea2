@@ -3,9 +3,9 @@ Created on 12/1/2015
 
 @author: Iranid
 '''
-from datetime import date,datetime, time, timedelta
-import sys 
+from datetime import datetime, timedelta,date
 from tarifa import Tarifa
+import sys
 #from django.forms.formsets import TOTAL_FORM_COUNT
 
 def main():
@@ -49,19 +49,15 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
     
     total_pago_reserva = 0
     
-    
     #Determina si fecha de entrada es mayor a la fecha de entrada
     restaDias = fecha_salida - fecha_entrada
     
-    if restaDias.days < 0:
-        print("La fecha de entrada es mayor que la fecha de salida")
-        sys.exit()
+    assert(fecha_salida > fecha_entrada) ,"La fecha de entrada es mayor que la fecha de salida"
         
-    if restaDias.total_seconds() <(15*60) or restaDias.total_seconds() >(72*60*60):
-        print("La reservación no cumple los límites de tiempo inferior y superior")
-        sys.exit()
+    assert(restaDias.total_seconds() >=(15*60) and restaDias.total_seconds() <= (72*60*60)), \
+           "La reservación no cumple los límites de tiempo inferior y superior"
     
-    max_tasa = max(tarifa._tasa_diurna, tarifa._tasa_nocturna)
+    max_tasa = max(tarifa.getTasaDiurno(), tarifa.getTasaNocturno())
     
     fecha_revision = fecha_entrada
     while fecha_revision < fecha_salida:
@@ -82,7 +78,7 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
             if hora_siguiente == 6:
                 total_pago_reserva += max_tasa
             else:
-                total_pago_reserva += tarifa._tasa_nocturna
+                total_pago_reserva += tarifa.getTasaNocturno()
             
     
         
@@ -91,12 +87,12 @@ def calculo_monto_reserva(fecha_entrada, fecha_salida,tarifa):
             if hora_siguiente == 18:
                 total_pago_reserva += max_tasa
             else:
-                total_pago_reserva += tarifa._tasa_diurna
+                total_pago_reserva += tarifa.getTasaDiurno()
             
         
         periodo_nocturno2 = list(range(18, 24))
         if hora_actual in periodo_nocturno2:
-            total_pago_reserva += tarifa._tasa_nocturna
+            total_pago_reserva += tarifa.getTasaNocturno()
     
     
         fecha_revision = fecha_revision.replace(hour = hora_siguiente_DT.hour, minute = hora_siguiente_DT.minute)

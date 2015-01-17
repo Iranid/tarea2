@@ -3,31 +3,37 @@ Created on 16/1/2015
 
 @author: Jonnathan
 '''
-import unittest
 from reservacion import calculo_monto_reserva
+from datetime import datetime
 from tarifa import Tarifa
-import datetime
+import unittest
 
-class Test(unittest.TestCase):
-
-    def testHoraCercana(self):
-        entrada = datetime.datetime(year=2015,month=1,day=13,hour=14,minute=10)
-        salida = datetime.datetime(year=2015, month=1, day=13, hour=14,minute=20)
-        tarifa = Tarifa(30,30)
-        monto = calculo_monto_reserva(entrada, salida, tarifa)
+class TestHoras(unittest.TestCase):
+    
+    def setUp(self):
+        self.tarifa = Tarifa(tasa_diurna=30,tasa_nocturna=40)
+    
+    def testMenorMinimo(self):
+        fecha_entrada = self.obtenerFecha("2014-01-01 01:00")
+        fecha_salida = self.obtenerFecha("2014-01-01 01:14")
+        self.assertRaises(AssertionError, calculo_monto_reserva(fecha_entrada, fecha_salida, self.tarifa))
         
     def testMinimoMinutos(self):
-        entrada = datetime.datetime(year=2015,month=1,day=13,hour=14,minute=10)
-        salida = datetime.datetime(year=2015, month=1, day=13, hour=14,minute=25)
-        tarifa = Tarifa(30,30)
-        monto = calculo_monto_reserva(entrada, salida, tarifa)
+        fecha_entrada = self.obtenerFecha("2014-01-01 01:00")
+        fecha_salida = self.obtenerFecha("2014-01-01 01:15")
+        monto = calculo_monto_reserva(fecha_entrada, fecha_salida, self.tarifa)
+        self.assertEqual(monto, self.tarifa.getTasaNocturno())
         
     def testUnMinuto(self):
-        entrada = datetime.datetime(year=2015,month=1,day=13,hour=14,minute=10)
-        salida = datetime.datetime(year=2015, month=1, day=13, hour=14,minute=26)
+        fecha_entrada = self.obtenerFecha("2014-01-01 01:00")
+        fecha_salida = self.obtenerFecha("2014-01-01 01:16")
         tarifa = Tarifa(30,30)
-        monto = calculo_monto_reserva(entrada, salida, tarifa)
-        self.assertEqual(monto, 30)
+        monto = calculo_monto_reserva(fecha_entrada, fecha_salida, tarifa)
+        self.assertEqual(monto, self.tarifa.getTasaDiurno())
+    
+    def obtenerFecha(self,fecha):
+        fecha = datetime.strptime(fecha, "%Y-%m-%d %H:%M")
+        return fecha;   
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
