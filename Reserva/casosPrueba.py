@@ -3,7 +3,7 @@ Created on 16/1/2015
 
 @author: Jonnathan
 '''
-from reservacion import calculo_monto_reserva
+from reservacion import calculoMontoReserva
 from datetime import datetime
 from tarifa import Tarifa
 import unittest
@@ -20,7 +20,7 @@ class TestHoras(unittest.TestCase):
     def calcularMonto(self,fecha_entrada,fecha_salida):
         fecha_entrada = datetime.strptime(fecha_entrada, "%Y-%m-%d %H:%M")
         fecha_salida = datetime.strptime(fecha_salida,"%Y-%m-%d %H:%M")
-        return calculo_monto_reserva(fecha_entrada,fecha_salida,self.tarifa)
+        return calculoMontoReserva(fecha_entrada,fecha_salida,self.tarifa)
       
     def testMinTiempo(self):
         #Arreglar assertRaises
