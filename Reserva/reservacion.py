@@ -51,7 +51,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
     
     totalPagoReserva = 0
     
-    #Determina si fecha de entrada es mayor a la fecha de entrada
+    #Determina si fecha de salida es mayor a la fecha de entrada
     restaDias = fechaSalida - fechaEntrada
     
     assert(fechaSalida > fechaEntrada) ,"La fecha de entrada es mayor que la fecha de salida"
@@ -59,7 +59,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
     assert(restaDias.total_seconds() >=(15*60) and restaDias.total_seconds() <= (72*60*60)), \
            "La reservación no cumple los límites de tiempo inferior y superior"
     
-    masTasa = max(tarifa.getTasaDiurno(), tarifa.getTasaNocturno())
+    maxTasa = max(tarifa.getTasaDiurno(), tarifa.getTasaNocturno())
     
     fechaRevision = fechaEntrada
     while fechaRevision < fechaSalida:
@@ -78,7 +78,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
         periodoNocturno1 = list(range(0,6))
         if horaActual in periodoNocturno1:
             if horaSiguiente == 6 and horaSiguienteDT.minute != 0:
-                totalPagoReserva += masTasa
+                totalPagoReserva += maxTasa
             else:
                 totalPagoReserva += tarifa.getTasaNocturno()
             
@@ -87,7 +87,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
         periodoDiurno = list(range(6,18))
         if horaActual in periodoDiurno:
             if horaSiguiente == 18 and horaSiguienteDT.minute != 0:
-                totalPagoReserva += masTasa
+                totalPagoReserva += maxTasa
             else:
                 totalPagoReserva += tarifa.getTasaDiurno()
             
@@ -105,6 +105,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
         print("nueva fecha y hora siguiente: ", fechaRevision, horaSiguiente)
     
     return totalPagoReserva
+    #return float(format(totalPagoReserva, '.2f'))
         
     
     

@@ -22,5 +22,5 @@ class Tarifa:
     def getTasaDiurno(self):
         return self.__tasa_diurna
     
-#tarifa = Tarifa(29.5,40.5)
-#print(tarifa.getnocturno())   
+#tarifa = Tarifa(29.5,49999.9995)
+#print(tarifa.getTasaNocturno())   
