@@ -6,23 +6,12 @@ Created on 16/1/2015
 from reservacion import calculoMontoReserva
 from datetime import datetime
 from tarifa import Tarifa
-from decimal import *
+from decimal import  *
 import unittest
 
-'''
-diurno = 5
-nocturno =  999.11
-diurno = Decimal(diurno)    # Constantes que representan las tasas fijas
-nocturno = Decimal(nocturno)
-'''
 
 
 class TestHoras(unittest.TestCase):
-    ''' Clase de prueba para las horas, La tasa es fija para cada prueba'''
-    '''
-    def setUp(self):
-        self.tarifa = Tarifa(tasa_diurna=diurno,tasa_nocturna=nocturno) # Inicializacion de tasa Fija
-    '''
     
     def calcularMonto(self,fecha_entrada,fecha_salida,diurno, nocturno):
         tarifa = Tarifa(diurno, nocturno)
@@ -44,38 +33,45 @@ class TestHoras(unittest.TestCase):
         nocturno = 999.11
         diurno = 40.67
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:15",diurno,nocturno)
-        self.assertEqual(float(monto), nocturno*1)
+        verificacion = Decimal(nocturno*1)
+        self.assertEqual(Context(prec = 5, rounding = ROUND_DOWN).create_decimal(monto), Context(prec = 5, rounding = ROUND_DOWN).create_decimal(verificacion))
         
     def testMayorTiempoInexacto(self):
         nocturno = 456.33
         diurno = 22.45
         monto = self.calcularMonto("2014-01-01 01:20", "2014-01-04 01:20", diurno, nocturno)
-        self.assertEqual(float(monto), (nocturno*11 + diurno*11 + max(nocturno,diurno)*2 )*3)
+        verificacion = Decimal((nocturno*11 + diurno*11 + max(nocturno,diurno)*2 )*3)
+        self.assertEqual(Context(prec = 5, rounding = ROUND_DOWN).create_decimal(monto), Context(prec = 5, rounding = ROUND_DOWN).create_decimal(verificacion))
 
     def testMayorTiempoExacto(self):
-        nocturno = 2.00
+        nocturno = 26.00
         diurno = 56.90
         monto = self.calcularMonto("2014-01-01 01:00", "2014-01-04 01:00",diurno, nocturno)
-        self.assertEqual(float(format(monto,'.2f')), float(format((nocturno*12 + diurno*12)*3,'.2f')))
+        verificacion = Decimal((nocturno*12 + diurno*12)*3)
+        self.assertEqual(Context(prec = 5, rounding = ROUND_DOWN).create_decimal(monto), Context(prec = 5, rounding = ROUND_DOWN).create_decimal(verificacion))
+        
                  
     def testUnMinuto(self):
-        nocturno = 2
-        diurno = 4
+        nocturno = 2.00
+        diurno = 4.00
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:16",diurno,nocturno)
-        self.assertEqual(float(monto), nocturno*1)
+        verificacion = Decimal(nocturno*1)
+        self.assertEqual(Context(prec = 5, rounding = ROUND_DOWN).create_decimal(monto), Context(prec = 5, rounding = ROUND_DOWN).create_decimal(verificacion))
         
     def testTransicionMasUnMinuto(self):
         nocturno = 2
         diurno = 4
         monto = self.calcularMonto("2014-01-12 05:01", "2014-01-12 06:02",diurno, nocturno)
-        self.assertEqual(float(monto), (max(nocturno, diurno)*1 + diurno *1))
+        verificacion = Decimal(max(nocturno, diurno)*1 + diurno *1)
+        self.assertEqual(Context(prec = 5, rounding = ROUND_DOWN).create_decimal(monto), Context(prec = 5, rounding = ROUND_DOWN).create_decimal(verificacion))
 
         
     def testMenorTiempoInexacto(self):
-        nocturno = 2
-        diurno = 4
+        nocturno = 8.013
+        diurno = 999.11
         monto = self.calcularMonto("2014-01-01 17:59", "2014-01-01 18:14",diurno, nocturno)
-        self.assertEqual(float(monto), max(diurno, nocturno)*1)
+        verificacion = max(diurno, nocturno)*1
+        self.assertEqual(Context(prec = 5, rounding = ROUND_DOWN).create_decimal(monto), Context(prec = 5, rounding = ROUND_DOWN).create_decimal(verificacion))
      
     
         
