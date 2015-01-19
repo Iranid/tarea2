@@ -105,7 +105,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
         print("nueva fecha y hora siguiente: ", fechaRevision, horaSiguiente)
     
     return totalPagoReserva
-    #return float(format(totalPagoReserva, '.2f'))
+   
         
     
     
