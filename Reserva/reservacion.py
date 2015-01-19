@@ -40,11 +40,11 @@ def main():
     
    
 def parseArg(args):
-     msg = "Error usando los argumentos de entrada: \nreservacion <fecha_entrada>, <fecha_salida>, <tasa_diurna>, <tasa_nocturna>"
-     if len(args) != 5:
-         print(msg)
-         sys.exit(1)
-     return args[1], args[2], float(args[3]), float(args[4])
+    msg = "Error usando los argumentos de entrada: \nreservacion <fecha_entrada>, <fecha_salida>, <tasa_diurna>, <tasa_nocturna>"
+    if len(args) != 5:
+        print(msg)
+        sys.exit(1)
+    return args[1], args[2], float(args[3]), float(args[4])
     
 
 def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):

@@ -24,11 +24,11 @@ class TestHoras(unittest.TestCase):
       
     def testMinTiempo(self):
         #Arreglar assertRaises
-        self.assertRaises(AssertionError, self.calcularMonto("2014-01-01 01:00", "2014-01-01 01:14"))
+        self.assertRaises(AssertionError, lambda: self.calcularMonto("2014-01-01 01:00", "2014-01-01 01:14"))
     
     def testMaxTiempo(self):
         #Arreglar assertRaises 
-        self.assertRaises(AssertionError, self.calcularMonto("2014-01-01 01:00", "2014-01-04 01:01"))
+        self.assertRaises(AssertionError, lambda: self.calcularMonto("2014-01-01 01:00", "2014-01-04 01:01"))
         
     def testMenorTiempo(self):
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:15")
@@ -49,6 +49,13 @@ class TestHoras(unittest.TestCase):
     def testTransicionMasUnMinuto(self):
         monto = self.calcularMonto("2014-01-12 05:01", "2014-01-12 06:02")
         self.assertEqual(monto, (max(nocturno, diurno)*1 + diurno *1))
+
+        
+    def testMenorTiempoInexacto(self):
+        monto = self.calcularMonto("2014-01-01 17:59", "2014-01-01 18:14")
+        self.assertEqual(monto, max(diurno, nocturno)* 1)
+     
+    
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
