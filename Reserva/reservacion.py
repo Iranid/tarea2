@@ -6,7 +6,7 @@ Created on 12/1/2015
 from datetime import datetime, timedelta,date
 from tarifa import Tarifa
 import sys
-#from django.forms.formsets import TOTAL_FORM_COUNT
+
 
 def main():
     fechaEntrada, fechaSalida, tasaDiurna, tasaNocturna = parseArg(sys.argv)
