@@ -5,6 +5,7 @@ Created on 12/1/2015
 '''
 from datetime import datetime, timedelta,date
 from tarifa import Tarifa
+from _decimal import *
 import sys
 
 
@@ -36,7 +37,8 @@ def main():
     tarifa = Tarifa(tasaDiurna, tasaNocturna)
     
     montoTotal = calculoMontoReserva(fechaEntrada, fechaSalida, tarifa)
-    print("El monto total a pagar por la reserva es: ", montoTotal)
+    TWOPLACES = Decimal(10) ** -2
+    print("El monto total a pagar por la reserva es: ", montoTotal.quantize(TWOPLACES))
     
    
 def parseArg(args):
