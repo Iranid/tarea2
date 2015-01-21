@@ -61,8 +61,7 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:15",diurno,nocturno)
         verificacion = Decimal(nocturno*1)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+        
     
     
     '''
@@ -75,22 +74,20 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 01:20", "2014-01-04 01:20", diurno, nocturno)
         verificacion = Decimal((nocturno*11 + diurno*11 + max(nocturno,diurno)*2 )*3)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+        
         
     
     '''
     Prueba una reserva de varios días donde no se producen transiciones de horario diurno/nocturno
     '''
     def testMayorTiempoExacto(self):
-        nocturno = 263.00
+        nocturno = 0
         diurno = 56.90
         TWOPLACES = Decimal(10) ** -2
         monto = self.calcularMonto("2014-01-01 01:00", "2014-01-04 01:00",diurno, nocturno)
         verificacion = Decimal((nocturno*12 + diurno*12)*3)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+        
         
     
     '''
@@ -103,8 +100,7 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 01:00","2014-01-01 01:16",diurno,nocturno)
         verificacion = Decimal(nocturno*1)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+        
     
     
     def testTransicionNocturnoDiurno(self):
@@ -155,8 +151,7 @@ class TestHoras(unittest.TestCase):
         monto = self.calcularMonto("2014-01-01 17:59", "2014-01-01 18:14",diurno, nocturno)
         verificacion = Decimal(max(diurno, nocturno)*1)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+       
     
     
     def testHoraDemasNocturno(self):
@@ -182,26 +177,24 @@ class TestHoras(unittest.TestCase):
     Prueba una reserva donde se produce una transicion de horario 
     y luego de la transicion la siguiente hora a cobrar tiene sólo un minuto 
     ''' 
-    def testHoraDemasConTransicionANocturno(self):
+    def testHoraDemasConTransicionANocturno1(self):
         nocturno = 2
         diurno = 4
         TWOPLACES = Decimal(10) ** -2
         monto = self.calcularMonto("2014-01-12 05:01", "2014-01-12 06:02",diurno, nocturno)
         verificacion = Decimal(max(nocturno, diurno)*1 + diurno *1)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+        
 
     
-    def testHoraDemasConTransicionADiurno(self):
+    def testHoraDemasConTransicionADiurno1(self):
         nocturno = 34.67
         diurno = 222.34
         TWOPLACES = Decimal(10) ** -2
         monto = self.calcularMonto("2014-01-01 17:01", "2014-01-01 18:02",diurno,nocturno)
         verificacion = Decimal(max(nocturno,diurno)*1  + nocturno*1)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
-        print(monto.quantize(TWOPLACES))
-        print(verificacion.quantize(TWOPLACES))
+        
     
     
     def testHoraDemasConTransicionANocturno2(self):
@@ -225,8 +218,14 @@ class TestHoras(unittest.TestCase):
         verificacion = Decimal(nocturno + diurno)
         self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
         
-    
-    
+    def testTarifaGratisDiurnoTiempoMin(self):
+        nocturno = 99.99
+        diurno = 0
+        TWOPLACES = Decimal(10) ** -2
+        monto = self.calcularMonto("2014-01-01 7:00", "2014-01-01 7:15",diurno,nocturno)
+        verificacion = Decimal(diurno)
+        self.assertEqual(monto.quantize(TWOPLACES), verificacion.quantize(TWOPLACES))
+        
     
         
 if __name__ == "__main__":

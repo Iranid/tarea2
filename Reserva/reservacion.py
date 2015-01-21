@@ -73,9 +73,7 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
         if horaSiguienteDT > fechaSalida:
             horaSiguienteDT = fechaSalida
             horaSiguiente = horaSiguienteDT.hour
-        print("\n")    
-        print("hora actual y siguiente: ", horaActual, horaSiguiente)  
-        print("rango analizado: ", fechaRevision.strftime("%H:%M"), " - ", horaSiguienteDT.strftime("%H:%M"))    
+            
         
         periodoNocturno1 = list(range(0,6))
         if horaActual in periodoNocturno1:
@@ -104,12 +102,11 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
             fechaRevision = fechaRevision + timedelta(days = 1)
             
         print("total acumulado: ", totalPagoReserva)
-        print("nueva fecha y hora siguiente: ", fechaRevision, horaSiguiente)
+        
     
     return totalPagoReserva
    
         
-    
     
 if __name__== "__main__":
     main()
