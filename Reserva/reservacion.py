@@ -100,8 +100,6 @@ def calculoMontoReserva(fechaEntrada, fechaSalida,tarifa):
         fechaRevision = fechaRevision.replace(hour = horaSiguienteDT.hour, minute = horaSiguienteDT.minute)
         if fechaRevision.hour == 0:
             fechaRevision = fechaRevision + timedelta(days = 1)
-            
-        print("total acumulado: ", totalPagoReserva)
         
     
     return totalPagoReserva
